@@ -44,6 +44,30 @@ class PlayScene extends BaseScene {
 		this.createPause();
     this.handleInputs();
     this.listenToEvents();
+
+		this.anims.create({
+      key: 'fly',
+      frames: this.anims.generateFrameNumbers('bird', { start: 9, end: 15}),
+      // 24 fps default, it will play animation consisting of 24 frames in 1 second
+      // in case of framerate 2 and sprite of 8 frames animations will play in
+      // 4 sec; 8 / 2 = 4
+      frameRate: 8,
+      // repeat infinitely
+      repeat: -1
+    })
+		this.anims.create({
+      key: 'dead',
+      frames: this.anims.generateFrameNumbers('bird', { start: 16, end: 18}),
+      // 24 fps default, it will play animation consisting of 24 frames in 1 second
+      // in case of framerate 2 and sprite of 8 frames animations will play in
+      // 4 sec; 8 / 2 = 4
+      frameRate: 8,
+      // repeat infinitely
+      repeat: 0
+    })
+
+
+    this.bird.play('fly');
   }
 
   update() {
@@ -82,7 +106,10 @@ class PlayScene extends BaseScene {
   }
 
   createBird() {
-    this.bird = this.physics.add.sprite(this.config.startPosition.x, this.config.startPosition.y, 'bird').setOrigin(0);
+    this.bird = this.physics.add.sprite(this.config.startPosition.x, this.config.startPosition.y, 'bird')
+      .setFlipX(true)
+      .setScale(3)
+      .setOrigin(0);
     this.bird.body.gravity.y = 600;
 		this.bird.setCollideWorldBounds(true);
   }
@@ -212,6 +239,8 @@ class PlayScene extends BaseScene {
   gameOver() {
     this.physics.pause();
     this.bird.setTint(0xEE4824);
+
+		this.bird.play('dead');
 
 		this.saveBestScore();
 
