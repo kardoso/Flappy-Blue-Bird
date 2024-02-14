@@ -25,17 +25,17 @@ class PlayScene extends BaseScene {
       },
       'normal': {
         pipeHorizontalDistanceRange: [280, 330],
-        pipeVerticalDistanceRange: [140, 190]
+        pipeVerticalDistanceRange: [130, 160]
       },
       'hard': {
         pipeHorizontalDistanceRange: [250, 310],
-        pipeVerticalDistanceRange: [120, 150]
+        pipeVerticalDistanceRange: [100, 120]
       }
     }
   }
 
   create() {
-    this.currentDifficulty = 'normal';
+    this.currentDifficulty = 'easy';
 		super.create();
     this.createBird();
     this.createPipes();
@@ -174,9 +174,20 @@ class PlayScene extends BaseScene {
           this.placePipe(...tempPipes);
 					this.increaseScore();
 					this.saveBestScore();
+          this.increaseDifficulty();
         }
       }
     })
+  }
+
+	increaseDifficulty() {
+    if (this.score === 3) {
+      this.currentDifficulty = 'normal';
+    }
+
+    if (this.score === 6) {
+      this.currentDifficulty = 'hard';
+    }
   }
 
   getRightMostPipe() {
